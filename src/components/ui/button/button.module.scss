@@ -1,21 +1,45 @@
 .primary {
   all: unset;
-  background-color: red;
+
+  cursor: pointer;
+
+  padding: 6px 28px;
+
+  background-color: var(--color-accent-500);
   border: 1px solid #000;
+  border-radius: 4px;
+  box-shadow: 0 4px 18px 0 #8c61ff59;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-info-700);
+  }
+
+  &:hover:enabled {
+    background-color: var(--color-accent-300);
+  }
+
+  &:active:enabled {
+    background-color: var(--color-accent-700);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
 }
 
 .secondary {
-  background-color: green;
+  background-color: var(--color-dark-300);
   border: 1px solid #000;
 }
 
 .tertiary {
-  background-color: blue;
-  border: 1px solid #000;
+  background-color: var(--color-dark-900);
+  border: 1px solid var(--color-accent-500);
 }
 
 .link {
-  background-color: yellow;
+  background-color: var(--color-dark-900);
   border: 1px solid #000;
 }
 
