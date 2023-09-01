@@ -1,15 +1,11 @@
-import { Button, Typography } from './components/ui'
+import { Card } from '@/components/ui/card'
+// import { Header } from '@/components/ui/header'
 
 export function App() {
   return (
     <div>
-      <Button variant="primary" as={'button'}>
-        Button
-      </Button>
-      <Button variant="primary" as={'a'} href="https://www.google.ru/">
-        href
-      </Button>
-      <Typography>Помойка это моя, я хозяин помойки</Typography>
+      {/*<Header isAuth={false} />*/}
+      <Card>CardCardCard</Card>
     </div>
   )
 }

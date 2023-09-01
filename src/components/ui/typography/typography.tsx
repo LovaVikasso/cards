@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef, ElementType, ReactNode } from 'react'
 
 import s from './typography.module.scss'
 
-export type TypographyProps<T extends ElementType = 'button'> = {
+export type TypographyProps<T extends ElementType = 'p'> = {
   as?: T
   children: ReactNode
   variant?:
