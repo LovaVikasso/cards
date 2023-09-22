@@ -11,7 +11,7 @@ export const Decks = () => {
   })
   const [createDeck, { isLoading }] = useCreateDeckMutation()
 
-  console.log(decks)
+  // console.log(decks)
 
   return (
     <div>
