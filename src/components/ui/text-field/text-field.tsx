@@ -1,10 +1,11 @@
 import { ChangeEvent, ComponentProps, ComponentPropsWithoutRef, forwardRef, useState } from 'react'
 
 import { clsx } from 'clsx'
-import { RxEyeOpen } from 'react-icons/rx'
 
 import s from './text-field.module.scss'
 
+import { EyeClosed } from '@/assets/icons/eyeClosed.tsx'
+import { EyeOpen } from '@/assets/icons/eyeOpen.tsx'
 import { Typography } from '@/components/ui'
 
 export type TextFieldProps = {
@@ -72,7 +73,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               type={'button'}
               onClick={() => setShowPassword(prev => !prev)}
             >
-              {showPassword ? RxEyeOpen : RxEyeOpen}
+              {showPassword ? <EyeOpen /> : <EyeClosed />}
             </button>
           )}
         </div>
@@ -85,7 +86,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   }
 )
 
-function getFinalType(type: ComponentProps<'input'>['type'], showPassword: boolean) {
+const getFinalType = (type: ComponentProps<'input'>['type'], showPassword: boolean) => {
   if (type === 'password' && showPassword) {
     return 'text'
   }

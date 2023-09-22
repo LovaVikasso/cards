@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SignIn } from './forgot-password.tsx'
+import { SignIn } from '@/components/auth'
 
 const meta = {
   title: 'Auth/SignIn',

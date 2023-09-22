@@ -22,7 +22,7 @@ export const Decks = () => {
       />
       <Button
         onClick={() => {
-          createDeck({ name: 'Очень новая' })
+          createDeck({ name: 'Еще новее' })
         }}
         disabled={isLoading}
       >

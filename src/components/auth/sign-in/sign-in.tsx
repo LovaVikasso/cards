@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
 import { Button, Typography } from '@/components/ui'
@@ -16,36 +17,52 @@ const schema = z.object({
   rememberMe: z.boolean().optional(), //если не будет optional, то всегда надо нажимать галочку, а это не надо
 })
 
-type FormValues = z.infer<typeof schema> //типизируем данные из схемы
-export const SignIn = () => {
+type SignInFormType = z.infer<typeof schema> //типизируем данные из схемы
+
+export type SignInProps = {
+  onSubmit: (data: SignInFormType) => void //при сабмите отправляем данные типа мыло, пароль, запомниМеня
+}
+
+export const SignIn = (props: SignInProps) => {
   const {
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<FormValues>({
+  } = useForm<SignInFormType>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
   })
+  const handleFormSubmitted = handleSubmit(props.onSubmit)
 
   console.log(errors)
-  const onSubmit = (data: FormValues) => {
-    console.log(data)
-  }
+  // const onSubmit = (data: FormValues) => {
+  //   console.log(data)
+  // }
 
   return (
     <Card>
       <Typography variant="h1">Sign in</Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleFormSubmitted}>
         <ControlledTextField name={'email'} control={control} label={'Email'} />
-        <ControlledTextField name={'password'} control={control} label={'Password'} />
+        <ControlledTextField
+          name={'password'}
+          control={control}
+          label={'Password'}
+          type={'password'}
+        />
         <ControlledCheckbox name={'rememberMe'} control={control} label={'Remember Me'} />
         <Button type="submit">Sign in</Button>
       </form>
       <Typography>Forgot password?</Typography>
       <Typography>{`Don't have an account?`}</Typography>
-      <Button variant={'link'} as={'a'}>
+      <Typography variant="link1" as={Link} to="/sign-up">
         Sign Up
-      </Button>
+      </Typography>
     </Card>
   )
 }

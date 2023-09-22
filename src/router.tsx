@@ -6,10 +6,12 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
+import { Decks, Login } from '@/pages'
+
 const publicRoutes: RouteObject[] = [
   {
     path: '/login',
-    element: <div>login</div>,
+    element: <Login />,
   },
 ] //есть публичные роуты, куда может зайти неавторизованный пользователь
 //в виде массива объектов {путь и элемент (что отображаем)}
@@ -17,7 +19,7 @@ const publicRoutes: RouteObject[] = [
 const privateRoutes: RouteObject[] = [
   {
     path: '/',
-    element: <div>hello</div>,
+    element: <Decks />,
   },
 ] //есть приватные, куда можно зайти только после успешной авторизации
 
