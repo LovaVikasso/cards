@@ -12,10 +12,21 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const PaginationMain: Story = {
+export const PaginationWithoutSelect: Story = {
   args: {
     totalCount: 300,
     currentPage: 1,
     pageSize: 10,
+  },
+}
+
+export const PaginationWithSelect: Story = {
+  args: {
+    totalCount: 300,
+    currentPage: 1,
+    pageSize: 10,
+    selectValue: 10,
+    selectOptions: [10, 20, 30, 50, 100], //массив значений для выбора сколько вещей на странице
+    onSelectChange: () => {},
   },
 }

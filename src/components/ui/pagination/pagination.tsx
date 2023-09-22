@@ -4,23 +4,26 @@ import { clsx } from 'clsx'
 
 import { ChevronLeft } from '@/assets/icons/chevron-left.tsx'
 import { ChevronRight } from '@/assets/icons/chevron-right.tsx'
-import { Button } from '@/components/ui'
+import { Button, Select, Typography } from '@/components/ui'
 import s from '@/components/ui/pagination/pagination.module.scss'
-
+//откуда почти все https://www.freecodecamp.org/news/build-a-custom-pagination-component-in-react/
 export type PaginationProps = {
   totalCount: number // сколько всего объектов, represents the total count of data available from the source.
   currentPage: number //текущая страница, represents the current active page. We'll use a 1-based index instead of a traditional 0-based index for our currentPage value.
   pageSize: number //сколько объектов видно на странице,represents the maximum data that is visible in a single page.
   onPageChange: (page: number) => void //callback function invoked with the updated page value when the page is changed.
   siblingCount?: number //сколько будет страниц спрва и слева до ..., по умолчанию 1  represents the min number of page buttons to be shown on each side of the current page button. Defaults to 1.
-  className?: string //
+  className?: string // вообще не обязательно, удалю
+  selectValue?: number //значение для селекта сколько вещей на странице
+  selectOptions?: number[] //массив значений для выбора сколько вещей на странице
+  onSelectChange?: (itemsOnPage: string) => void // функция для смены значения в селекте
 }
 
 const classNames = {
   container: clsx(s.container),
-  numbers: clsx(s.numbers),
   item: clsx(s.item),
   chevron: clsx(s.chevron),
+  containerSelect: clsx(s.containerSelect),
   currentButton(selected?: boolean) {
     return clsx(this.item, selected && s.selected)
   },
@@ -34,6 +37,9 @@ export const Pagination: FC<PaginationProps> = ({
   currentPage,
   pageSize,
   onPageChange,
+  selectValue,
+  selectOptions,
+  onSelectChange,
   siblingCount = 1,
 }) => {
   const paginationRange = usePagination({
@@ -59,6 +65,11 @@ export const Pagination: FC<PaginationProps> = ({
   }
   let firstPage = currentPage === 1
   let lastPage = paginationRange[paginationRange.length - 1] //Нужны для стилизации кнопок
+
+  const showSelect = !!selectValue && !!selectOptions && !!onSelectChange
+  //если  все эти пропсы не undefined то вот переменая для показа селекта
+
+  //в селекте все значения строки, поэтому
 
   return (
     <div className={classNames.container}>
@@ -94,6 +105,39 @@ export const Pagination: FC<PaginationProps> = ({
       <Button className={classNames.item} onClick={onNext} disabled={currentPage === lastPage}>
         <ChevronRight />
       </Button>
+      {showSelect && (
+        <SelectForPagination
+          selectValue={selectValue}
+          selectOptions={selectOptions}
+          onSelectChange={onSelectChange}
+        />
+      )}
+    </div>
+  )
+}
+//надо было вынести в отдельную компоненту чтобы не было undefined,в будущем разнесу все по файлам
+type SelectProps = {
+  selectValue: number
+  selectOptions: number[]
+  onSelectChange: (itemPerPage: string) => void
+}
+const SelectForPagination: FC<SelectProps> = ({ selectValue, selectOptions, onSelectChange }) => {
+  const selectOptionsStrings = selectOptions.map(value => ({
+    label: value.toString(),
+    value: value.toString(),
+  }))
+  let selectValueStrings = selectValue.toString()
+
+  return (
+    <div className={classNames.containerSelect}>
+      <Typography variant="body1">Показать </Typography>
+      <Select
+        options={selectOptionsStrings}
+        value={selectValueStrings}
+        onChange={onSelectChange}
+        variant="pagination"
+      />
+      <Typography variant="body1">на странице </Typography>
     </div>
   )
 }

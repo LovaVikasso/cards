@@ -1,11 +1,8 @@
-import { Card } from '@/components/ui/card'
-// import { Header } from '@/components/ui/header'
+// import { ForgotPasswordPage } from '@/pages'
+
+// import { Layout } from '@/pages/layout'
+import { Router } from '@/router.tsx'
 
 export function App() {
-  return (
-    <div>
-      {/*<Header isAuth={false} />*/}
-      <Card>CardCardCard</Card>
-    </div>
-  )
+  return <Router />
 }

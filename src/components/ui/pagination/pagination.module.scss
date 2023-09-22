@@ -1,6 +1,7 @@
 .container {
   display: flex;
-  max-width: 535px;
+
+  //max-width: 600px;
   height: 24px;
 }
 
@@ -24,28 +25,31 @@
 
   &.dots:hover {
     cursor: default;
-    background-color: transparent;
+    fill: var(--color-dark-500);
   }
 
   &:hover {
     cursor: pointer;
-    background-color: var(--color-dark-500);
+    background-color: var(--color-dark-500) !important;
+  }
+
+  &:active {
+    cursor: pointer;
+    background-color: var(--color-light-100);
   }
 
   &.selected {
     color: var(--color-dark-900);
     background-color: var(--color-light-100);
   }
-
-  &.chevron {
-    align-content: center;
-    justify-content: center;
-  }
 }
 
-.numbers {
+.containerSelect {
   display: flex;
-  justify-content: space-between;
-  max-width: 300px;
-  margin-right: 25px;
+  gap: 12px;
+  align-items: center;
+
+  margin-left: 24px;
+
+  color: var(--color-light-100);
 }

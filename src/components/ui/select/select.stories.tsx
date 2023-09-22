@@ -12,27 +12,38 @@ export default {
 
 const optionsPrimary = [
   {
-    value: 'select-box1',
+    value: 'first',
+    label: 'first',
   },
   {
-    value: 'select-box2',
+    value: 'second',
+    label: 'second',
   },
   {
-    value: 'select-box3',
+    value: 'third',
+    label: 'third',
+  },
+  {
+    value: 'fourth',
+    label: 'fourth',
   },
 ]
 const optionsPagination = [
   {
     value: '1',
+    label: '1',
   },
   {
     value: '2',
+    label: '2',
   },
   {
     value: '3',
+    label: '3',
   },
   {
     value: '4',
+    label: '4',
   },
 ]
 
@@ -50,7 +61,7 @@ export const Simple = {
 
 export const SimpleWithLabel = {
   render: (args: SelectProps) => {
-    const [value, setValue] = useState('sdsd')
+    const [value, setValue] = useState('')
 
     return <Select {...args} value={value} onChange={setValue} />
   },
