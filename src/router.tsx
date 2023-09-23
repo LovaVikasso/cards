@@ -8,7 +8,7 @@ import {
 
 import { SignIn, SignUp } from '@/components/auth'
 import { ForgotPassword } from '@/components/auth/forgotPassword'
-import { Decks, Layout } from '@/pages'
+import { Decks, Layout, PageNotFound } from '@/pages'
 
 const publicRoutes: RouteObject[] = [
   {
@@ -33,7 +33,7 @@ const publicRoutes: RouteObject[] = [
   },
   {
     path: '/*',
-    element: <div>404 page not found</div>,
+    element: <PageNotFound />,
   },
 ] //есть публичные роуты, куда может зайти неавторизованный пользователь
 //в виде массива объектов {путь и элемент (что отображаем)}
