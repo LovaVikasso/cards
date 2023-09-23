@@ -6,20 +6,22 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { Decks, Login } from '@/pages'
+import { SignIn, SignUp } from '@/components/auth'
+import { ForgotPassword } from '@/components/auth/forgotPassword'
+import { Decks, Layout } from '@/pages'
 
 const publicRoutes: RouteObject[] = [
   {
     path: '/login',
-    element: <Login />,
+    element: <SignIn />,
   },
   {
     path: '/sign-up',
-    element: <div>Sign up</div>,
+    element: <SignUp />,
   },
   {
     path: '/forgot-password',
-    element: <div>Forgot your password?</div>,
+    element: <ForgotPassword />,
   },
   {
     path: '/check-email',
@@ -42,17 +44,26 @@ const privateRoutes: RouteObject[] = [
     element: <Decks />,
   },
   {
-    path: '/personal-info',
+    path: '/info',
     element: <div>Personal info</div>,
   },
 ] //есть приватные, куда можно зайти только после успешной авторизации
 
 const router = createBrowserRouter([
   {
-    element: <PrivateRoutes />,
-    children: privateRoutes,
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        element: <PrivateRoutes />,
+        children: privateRoutes,
+      },
+    ],
   },
-  ...publicRoutes,
+  {
+    element: <Layout />,
+    children: publicRoutes,
+  },
 ]) //создаем роуты через createBrowserRouter, в него передаем массив публичных и приватных роутов раскукоженными
 
 export const Router = () => {
