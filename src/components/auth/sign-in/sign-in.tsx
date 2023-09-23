@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { Button, Typography } from '@/components/ui'
 import { Card } from '@/components/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/components/ui/controlled'
+import { useLoginMutation } from '@/services/auth/auth.ts'
 
 const schema = z.object({
   email: z.string().email('Invalid email address').trim().nonempty('Enter email'), //мыло должно быть формата строка, типа почта(а@a@), убрать пробелы, не пустой
@@ -19,16 +20,13 @@ const schema = z.object({
 
 type SignInFormType = z.infer<typeof schema> //типизируем данные из схемы
 
-export type SignInProps = {
-  onSubmit: (data: SignInFormType) => void //при сабмите отправляем данные типа мыло, пароль, запомниМеня
-}
+// export type SignInProps = {
+//   onSubmit: (data: SignInFormType) => void //при сабмите отправляем данные типа мыло, пароль, запомниМеня
+// }
 
-export const SignIn = (props: SignInProps) => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<SignInFormType>({
+export const SignIn = () => {
+  const [login, { error }] = useLoginMutation()
+  const { handleSubmit, control, setError } = useForm<SignInFormType>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
     defaultValues: {
@@ -37,12 +35,21 @@ export const SignIn = (props: SignInProps) => {
       rememberMe: false,
     },
   })
-  const handleFormSubmitted = handleSubmit(props.onSubmit)
 
-  console.log(errors)
-  // const onSubmit = (data: FormValues) => {
-  //   console.log(data)
-  // }
+  if (error) {
+    if (
+      'status' in error &&
+      typeof error.data == 'object' &&
+      error.data &&
+      'message' in error.data
+    ) {
+      setError('password', {
+        type: 'custom',
+        message: error.data.message as string,
+      }) //
+    }
+  }
+  const handleFormSubmitted = handleSubmit(login)
 
   return (
     <Card>

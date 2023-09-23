@@ -1,10 +1,10 @@
 import { SignIn } from '@/components/auth'
-import { useLoginMutation } from '@/services/auth/auth.ts'
+// import { useLoginMutation } from '@/services/auth/auth.ts'
 
 export const Login = () => {
-  const [login, error] = useLoginMutation()
+  // const [login, error] = useLoginMutation()
+  //
+  // console.log(error)
 
-  console.log(error)
-
-  return <SignIn onSubmit={login} />
+  return <SignIn />
 }

@@ -73,7 +73,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
               type={'button'}
               onClick={() => setShowPassword(prev => !prev)}
             >
-              {showPassword ? <EyeOpen /> : <EyeClosed />}
+              {showPassword ? <EyeClosed /> : <EyeOpen />}
             </button>
           )}
         </div>
