@@ -13,6 +13,26 @@ const publicRoutes: RouteObject[] = [
     path: '/login',
     element: <Login />,
   },
+  {
+    path: '/sign-up',
+    element: <div>Sign up</div>,
+  },
+  {
+    path: '/forgot-password',
+    element: <div>Forgot your password?</div>,
+  },
+  {
+    path: '/check-email',
+    element: <div>Check email</div>,
+  },
+  {
+    path: '/create-new-password',
+    element: <div>Create new password</div>,
+  },
+  {
+    path: '/*',
+    element: <div>404 page not found</div>,
+  },
 ] //есть публичные роуты, куда может зайти неавторизованный пользователь
 //в виде массива объектов {путь и элемент (что отображаем)}
 
@@ -20,6 +40,10 @@ const privateRoutes: RouteObject[] = [
   {
     path: '/',
     element: <Decks />,
+  },
+  {
+    path: '/personal-info',
+    element: <div>Personal info</div>,
   },
 ] //есть приватные, куда можно зайти только после успешной авторизации
 
