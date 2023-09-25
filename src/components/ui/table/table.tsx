@@ -29,7 +29,7 @@ export const Row: FC<ComponentProps<'tr'>> = props => {
   return <tr {...props} />
 }
 export const Data: FC<ComponentProps<'td'>> = props => {
-  return <td {...props} />
+  return <td className={s.data} {...props} />
 }
 
 //кастомный заголовкок если используем сортировку
@@ -70,7 +70,7 @@ export const SortedHeader: FC<
     <thead {...restProps}>
       <tr>
         {columns.map(({ title, key, sortable }) => (
-          <th key={key} onClick={handleSort(key, sortable)}>
+          <th className={s.head} key={key} onClick={handleSort(key, sortable)}>
             {title}
             {sort && sort.key === key && <span>{sort.direction === 'asc' ? '▲' : '▼'}</span>}
           </th>
