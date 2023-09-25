@@ -4,6 +4,8 @@ import { clsx } from 'clsx'
 
 import s from './table.module.scss'
 
+import { SortDown } from '@/assets/icons/down.tsx'
+import { SortUp } from '@/assets/icons/up.tsx'
 import { Typography } from '@/components/ui'
 import { Column, Sort } from '@/services/types'
 
@@ -41,7 +43,7 @@ export const SortedHeader: FC<
       //стандартные типы для thead и типы для сортировки
       columns: Column[] //массив значений для столбцов, ключ, имя, будет ли сортировка
       sort?: Sort //инфо о текущей сотрировке
-      onSort?: (sort: Sort) => void //функция для сортировки
+      onSort?: (sort: Sort | null) => void //функция для сортировки
     },
     'children'
   >
@@ -54,14 +56,16 @@ export const SortedHeader: FC<
     // В остальных случаях меняется направление сортировки и вызывается функция onSort с новой информацией о сортировке.
     if (!onSort || !sortable) return
 
-    if (sort?.key !== key) return onSort({ key, direction: 'asc' })
-
-    if (sort.direction === 'desc') return onSort(null)
-
-    return onSort({
-      key,
-      direction: sort?.direction === 'asc' ? 'desc' : 'asc',
-    })
+    if (sort?.key !== key) {
+      // Начинаем сортировку заново при первом клике
+      return onSort({ key, direction: 'asc' })
+    } else if (sort.direction === 'asc') {
+      // Меняем направление сортировки при втором клике
+      return onSort({ key, direction: 'desc' })
+    } else {
+      // Сбрасываем сортировку при третьем клике
+      return onSort(null)
+    }
   }
 
   return (
@@ -72,7 +76,9 @@ export const SortedHeader: FC<
         {columns.map(({ title, key, sortable }) => (
           <th className={s.head} key={key} onClick={handleSort(key, sortable)}>
             {title}
-            {sort && sort.key === key && <span>{sort.direction === 'asc' ? '▲' : '▼'}</span>}
+            {sort && sort.key === key && (
+              <span className={s.sort}>{sort.direction === 'asc' ? <SortUp /> : <SortDown />}</span>
+            )}
           </th>
         ))}
       </tr>

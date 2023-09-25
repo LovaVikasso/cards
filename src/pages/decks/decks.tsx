@@ -5,22 +5,24 @@ import s from './decks.module.scss'
 import { Button, Table, Typography } from '@/components/ui'
 import { TextField } from '@/components/ui/text-field'
 import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks'
+import { Deck } from '@/services/decks/types.ts'
 import { Column, Sort } from '@/services/types'
 const columns: Column[] = [
-  { key: 'Name', title: 'Name', sortable: true },
-  { key: 'Cards', title: 'Cards', sortable: true },
-  { key: 'Last Updated', title: 'Last Updated', sortable: true },
-  { key: 'Created by', title: 'Created by' },
+  { key: 'name', title: 'Name', sortable: true },
+  { key: 'cardsCount', title: 'Cards', sortable: true },
+  { key: 'updated', title: 'Last Updated', sortable: true },
+  { key: 'created', title: 'Created by' },
 ]
 
 export const Decks = () => {
-  const [sort, setSort] = useState<Sort>(null)
-  const sortString: string | null = sort ? `${sort?.key}-${sort?.direction}` : null
+  const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'asc' })
+  const sortString = sort ? `${sort.key}-${sort.direction}` : null //строка для бэкэнда
 
-  console.log(sort, sortString)
+  // console.log(sort, sortString)
   const [search, setSearch] = useState('')
   const decks = useGetDecksQuery({
     name: search,
+    orderBy: sortString,
   })
   const [createDeck, { isLoading }] = useCreateDeckMutation()
 
@@ -54,9 +56,9 @@ export const Decks = () => {
         {/*  <Table.HeadData>Cards</Table.HeadData>*/}
         {/*  <Table.HeadData>Last Updated</Table.HeadData>*/}
         {/*  <Table.HeadData>Created by</Table.HeadData>*/}
-        {/*</Table.Row>*/}
+        {/*</Table.Row> если без сортировки*/}
         <Table.Body>
-          {decks.data?.items?.map((deck: any) => {
+          {decks.data?.items?.map((deck: Deck) => {
             return (
               <Table.Row key={deck.id}>
                 <Table.Data>{deck.name}</Table.Data>
