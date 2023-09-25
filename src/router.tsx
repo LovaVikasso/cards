@@ -6,8 +6,7 @@ import {
   RouterProvider,
 } from 'react-router-dom'
 
-import { SignIn, SignUp } from '@/components/auth'
-import { ForgotPassword } from '@/components/auth/forgotPassword'
+import { SignIn, SignUp, ForgotPassword, CheckEmail } from '@/components/auth'
 import { Decks, Layout, PageNotFound } from '@/pages'
 
 const publicRoutes: RouteObject[] = [
@@ -25,7 +24,7 @@ const publicRoutes: RouteObject[] = [
   },
   {
     path: '/check-email',
-    element: <div>Check email</div>,
+    element: <CheckEmail />,
   },
   {
     path: '/create-new-password',
