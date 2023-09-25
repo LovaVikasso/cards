@@ -40,8 +40,18 @@ export const SignUp = () => {
       <Typography variant="h1">Sign up</Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ControlledTextField name={'email'} control={control} label={'Email'} />
-        <ControlledTextField name={'password'} control={control} label={'Password'} />
-        <ControlledTextField name={'confirm'} control={control} label={'Confirm password'} />
+        <ControlledTextField
+          name={'password'}
+          control={control}
+          label={'Password'}
+          type={'password'}
+        />
+        <ControlledTextField
+          name={'confirm'}
+          control={control}
+          label={'Confirm password'}
+          type={'password'}
+        />
         <Button type="submit">Sign up</Button>
       </form>
       <Typography>Already have an account?</Typography>
