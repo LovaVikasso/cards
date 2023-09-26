@@ -3,6 +3,8 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { z } from 'zod'
 
+import s from './sign-in.module.scss'
+
 import { Button, Typography } from '@/components/ui'
 import { Card } from '@/components/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/components/ui/controlled'
@@ -52,9 +54,9 @@ export const SignIn = () => {
   const handleFormSubmitted = handleSubmit(login)
 
   return (
-    <Card>
+    <Card className={s.container}>
       <Typography variant="h1">Sign in</Typography>
-      <form onSubmit={handleFormSubmitted}>
+      <form className={s.form} onSubmit={handleFormSubmitted}>
         <ControlledTextField name={'email'} control={control} label={'Email'} />
         <ControlledTextField
           name={'password'}
@@ -62,14 +64,24 @@ export const SignIn = () => {
           label={'Password'}
           type={'password'}
         />
-        <ControlledCheckbox name={'rememberMe'} control={control} label={'Remember Me'} />
-        <Button type="submit">Sign in</Button>
+        <ControlledCheckbox
+          className={s.remember}
+          name={'rememberMe'}
+          control={control}
+          label={'Remember Me'}
+        />
+        <Typography className={s.forgot} variant="body2" as={Link} to="/forgot-password">
+          Forgot password?
+        </Typography>
+        <Button fullWidth={true} type="submit">
+          Sign in
+        </Button>
       </form>
-      <Typography>Forgot password?</Typography>
+
       <Typography>{`Don't have an account?`}</Typography>
-      <Typography variant="link1" as={Link} to="/sign-up">
+      <Button variant="link" as={Link} to="/sign-up">
         Sign Up
-      </Typography>
+      </Button>
     </Card>
   )
 }
