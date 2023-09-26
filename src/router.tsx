@@ -8,6 +8,7 @@ import {
 
 import { SignIn, SignUp, ForgotPassword, CheckEmail } from '@/components/auth'
 import { CreateNewPassword } from '@/components/auth/create-new-password'
+import { PersonalInfo } from '@/components/personal'
 import { Decks, Layout, PageNotFound } from '@/pages'
 
 const publicRoutes: RouteObject[] = [
@@ -45,7 +46,7 @@ const privateRoutes: RouteObject[] = [
   },
   {
     path: '/info',
-    element: <div>Personal info</div>,
+    element: <PersonalInfo name={'Victoria'} avatar={'VP'} email={'victoria.pavlova7@gmail.com'} />,
   },
 ] //есть приватные, куда можно зайти только после успешной авторизации
 

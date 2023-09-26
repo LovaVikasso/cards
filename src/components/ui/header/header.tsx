@@ -31,7 +31,7 @@ export const Header: FC<HeaderProps> = ({
           <Typography variant="subtitle1" className={s.name}>
             {name || 'no name'}
           </Typography>
-          <Avatar name={name || 'no name'} avatar={avatar} />
+          <Avatar name={name || 'no name'} avatar={avatar} className={s.avatar} />
         </div> //здесь будет закрывающий тег дропдауна
       ) : (
         <div className={s.button}>
