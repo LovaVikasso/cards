@@ -1,14 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi } from '@reduxjs/toolkit/query/react'
+
+import { baseQueryWithReauth } from '@/services/base-query-with-reauth.ts'
 
 export const baseApi = createApi({
   reducerPath: 'baseApi',
   tagTypes: ['Decks', 'Me'],
-  baseQuery: fetchBaseQuery({
-    baseUrl: 'https://api.flashcards.andrii.es',
-    credentials: 'include',
-    prepareHeaders: headers => {
-      headers.append('x-auth-skip', 'true') //чтобы без авторизации работать временно
-    },
-  }), //альтернатива инстанс, через него будут проходить все запросы
+  baseQuery: baseQueryWithReauth, //все апосы будут проходить через него для токенов
   endpoints: () => ({}),
 })

@@ -8,7 +8,7 @@ import s from './sign-in.module.scss'
 import { Button, Typography } from '@/components/ui'
 import { Card } from '@/components/ui/card'
 import { ControlledCheckbox, ControlledTextField } from '@/components/ui/controlled'
-import { useLoginMutation } from '@/services/auth/auth.ts'
+import { useLoginMutation } from '@/services/auth/auth.service.ts'
 
 const schema = z.object({
   email: z.string().email('Invalid email address').trim().nonempty('Enter email'), //мыло должно быть формата строка, типа почта(а@a@), убрать пробелы, не пустой
@@ -23,7 +23,9 @@ const schema = z.object({
 type SignInFormType = z.infer<typeof schema> //типизируем данные из схемы
 
 // export type SignInProps = {
-//   onSubmit: (data: SignInFormType) => void //при сабмите отправляем данные типа мыло, пароль, запомниМеня
+//   login: any
+//   error: any
+//   //   onSubmit: (data: SignInFormType) => void //при сабмите отправляем данные типа мыло, пароль, запомниМеня
 // }
 
 export const SignIn = () => {
@@ -34,7 +36,7 @@ export const SignIn = () => {
     defaultValues: {
       email: '',
       password: '',
-      rememberMe: false,
+      rememberMe: true,
     },
   })
 
