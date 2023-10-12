@@ -2,9 +2,11 @@ import { useState } from 'react'
 
 import s from './decks.module.scss'
 
-import { Button, Table, Typography, Slider } from '@/components/ui'
+import { useAppDispatch, useAppSelector } from '@/common/hooks.ts'
+import { Button, Table, Typography, Slider, Pagination } from '@/components/ui'
 import { TextField } from '@/components/ui/text-field'
 import { useCreateDeckMutation, useDeleteDeckMutation, useGetDecksQuery } from '@/services/decks'
+import { decksSlice } from '@/services/decks/decks.slice.ts'
 import { Deck } from '@/services/decks/types.ts'
 import { Column, Sort } from '@/services/types'
 const columns: Column[] = [
@@ -12,22 +14,27 @@ const columns: Column[] = [
   { key: 'cardsCount', title: 'Cards', sortable: true },
   { key: 'updated', title: 'Last Updated', sortable: true },
   { key: 'created', title: 'Created by' },
-  { key: 'icons', title: '' },
+  { key: 'actions', title: '' },
 ]
 
 export const Decks = () => {
   const [sort, setSort] = useState<Sort>({ key: 'updated', direction: 'desc' })
   const sortString = sort ? `${sort.key}-${sort.direction}` : null //строка для бэкэнда
 
-  // console.log(sort, sortString)
+  const currentPage = useAppSelector(state => state.decks.currentPage)
+  const itemsPerPage = useAppSelector(state => state.decks.itemsPerPage)
+  const dispatch = useAppDispatch()
+  const updateCurrentPage = (page: number) => dispatch(decksSlice.actions.updateCurrentPage(page))
+
   const [search, setSearch] = useState('')
-  const decks = useGetDecksQuery({
+  const { currentData: decks } = useGetDecksQuery({
+    currentPage,
+    itemsPerPage,
     name: search,
     orderBy: sortString,
   })
   const [createDeck, { isLoading }] = useCreateDeckMutation()
   const [deleteDeck] = useDeleteDeckMutation()
-  // console.log(decks)
 
   return (
     <div className={s.container}>
@@ -40,7 +47,7 @@ export const Decks = () => {
           onChange={e => setSearch(e.currentTarget.value)}
           placeholder="Search by name"
         />
-        {/*<Tab value={activeTab} onVaaueChange={setActiveTab}>*/}
+        {/*<Tab value={activeTab} onValueChange={setActiveTab}>*/}
         {/*  <Tablist>*/}
         {/*    <TabTrigger value={'my'} >My decks</TabTrigger>*/}
         {/*    <TabTrigger value={'all'} >All decks</TabTrigger>*/}
@@ -66,7 +73,7 @@ export const Decks = () => {
         {/*  <Table.HeadData>Created by</Table.HeadData>*/}
         {/*</Table.Row> если без сортировки*/}
         <Table.Body>
-          {decks.currentData?.items?.map((deck: Deck) => {
+          {decks?.items?.map((deck: Deck) => {
             return (
               <Table.Row key={deck.id}>
                 <Table.Data>{deck.name}</Table.Data>
@@ -89,6 +96,15 @@ export const Decks = () => {
           })}
         </Table.Body>
       </Table.Root>
+      {decks?.pagination.totalItems && (
+        <Pagination
+          className={s.pagination}
+          totalCount={decks?.pagination.totalItems}
+          currentPage={currentPage}
+          pageSize={itemsPerPage}
+          onPageChange={updateCurrentPage}
+        />
+      )}
     </div>
   )
 }
