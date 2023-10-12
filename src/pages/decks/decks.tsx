@@ -57,6 +57,7 @@ export const Decks = () => {
         <Button>All cards</Button>
         <Button
           onClick={() => {
+            updateCurrentPage(1)
             createDeck({ name: 'Еще новее' })
           }}
           disabled={isLoading}

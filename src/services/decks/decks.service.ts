@@ -1,5 +1,6 @@
 import { baseApi } from '@/services/base-api.ts'
 import { Deck, DecksParams, DecksResponse } from '@/services/decks/types.ts'
+import { RootState } from '@/services/store.ts'
 
 const decksApi = baseApi.injectEndpoints({
   endpoints: builder => {
@@ -27,15 +28,21 @@ const decksApi = baseApi.injectEndpoints({
         // второй паратетр аргументы, что передавались в query, поэтому такие данные надо хранить в редаксе
         // в endpoint пишем get, потому что после добавления поста нам надо получить все данные (колоды, вдрруг кто-то создал еще в процессе создания нашей)
         //то есть мы пессимистичны - будем делать get после post запроса
-        async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        async onQueryStarted(_, { dispatch, queryFulfilled, getState }) {
+          const state = getState() as RootState
+
           try {
             const response = await queryFulfilled
 
             dispatch(
-              decksApi.util.updateQueryData('getDecks', { currentPage: 1 }, draft => {
-                // draft.items.unshift(response.data)
-                draft.items = [response.data, ...draft.items]
-              })
+              decksApi.util.updateQueryData(
+                'getDecks',
+                { currentPage: state.decks.currentPage },
+                draft => {
+                  // draft.items.unshift(response.data)
+                  draft.items = [response.data, ...draft.items]
+                }
+              )
             )
           } catch (error) {
             // patchResult.undo()
@@ -48,11 +55,16 @@ const decksApi = baseApi.injectEndpoints({
           url: `v1/decks/${data.id}`,
           method: 'DELETE',
         }),
-        async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+        async onQueryStarted({ id }, { dispatch, queryFulfilled, getState }) {
+          const state = getState() as RootState
           const patchResult = dispatch(
-            decksApi.util.updateQueryData('getDecks', { currentPage: 1 }, draft => {
-              draft.items = draft.items.filter(item => item.id !== id)
-            })
+            decksApi.util.updateQueryData(
+              'getDecks',
+              { currentPage: state.decks.currentPage },
+              draft => {
+                draft.items = draft.items.filter(item => item.id !== id)
+              }
+            )
           )
 
           try {
