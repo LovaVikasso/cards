@@ -4,7 +4,7 @@ import s from './decks.module.scss'
 
 import { Button, Table, Typography, Slider } from '@/components/ui'
 import { TextField } from '@/components/ui/text-field'
-import { useCreateDeckMutation, useGetDecksQuery } from '@/services/decks'
+import { useCreateDeckMutation, useDeleteDeckMutation, useGetDecksQuery } from '@/services/decks'
 import { Deck } from '@/services/decks/types.ts'
 import { Column, Sort } from '@/services/types'
 const columns: Column[] = [
@@ -12,6 +12,7 @@ const columns: Column[] = [
   { key: 'cardsCount', title: 'Cards', sortable: true },
   { key: 'updated', title: 'Last Updated', sortable: true },
   { key: 'created', title: 'Created by' },
+  { key: 'icons', title: '' },
 ]
 
 export const Decks = () => {
@@ -25,7 +26,7 @@ export const Decks = () => {
     orderBy: sortString,
   })
   const [createDeck, { isLoading }] = useCreateDeckMutation()
-
+  const [deleteDeck] = useDeleteDeckMutation()
   // console.log(decks)
 
   return (
@@ -39,6 +40,12 @@ export const Decks = () => {
           onChange={e => setSearch(e.currentTarget.value)}
           placeholder="Search by name"
         />
+        {/*<Tab value={activeTab} onVaaueChange={setActiveTab}>*/}
+        {/*  <Tablist>*/}
+        {/*    <TabTrigger value={'my'} >My decks</TabTrigger>*/}
+        {/*    <TabTrigger value={'all'} >All decks</TabTrigger>*/}
+        {/*  </Tablist>*/}
+        {/*</Tab>*/}
         <Button>My cards</Button>
         <Button>All cards</Button>
         <Button
@@ -59,13 +66,24 @@ export const Decks = () => {
         {/*  <Table.HeadData>Created by</Table.HeadData>*/}
         {/*</Table.Row> если без сортировки*/}
         <Table.Body>
-          {decks.data?.items?.map((deck: Deck) => {
+          {decks.currentData?.items?.map((deck: Deck) => {
             return (
               <Table.Row key={deck.id}>
                 <Table.Data>{deck.name}</Table.Data>
                 <Table.Data>{deck.cardsCount}</Table.Data>
                 <Table.Data>{new Date(deck.updated).toLocaleDateString('ru-Ru')}</Table.Data>
                 <Table.Data>{deck.author.name}</Table.Data>
+                <Table.Data>
+                  <Button
+                    onClick={() =>
+                      deleteDeck({ id: deck.id })
+                        .unwrap()
+                        .catch(error => alert(error?.data?.message))
+                    }
+                  >
+                    Delete deck
+                  </Button>
+                </Table.Data>
               </Table.Row>
             )
           })}

@@ -37,6 +37,6 @@ export type DecksParams = {
   name?: string
   authorId?: string
   orderBy?: string | null
-  currenPage?: number
+  currentPage?: number
   itemsPerPage?: number
 } | void
