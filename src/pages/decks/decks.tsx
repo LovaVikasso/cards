@@ -3,7 +3,7 @@ import { useState } from 'react'
 import s from './decks.module.scss'
 
 import { useAppDispatch, useAppSelector } from '@/common/hooks.ts'
-import { Button, Table, Typography, Slider, Pagination } from '@/components/ui'
+import { Button, Table, Typography, Modal, Pagination } from '@/components/ui'
 import { TextField } from '@/components/ui/text-field'
 import { useCreateDeckMutation, useDeleteDeckMutation, useGetDecksQuery } from '@/services/decks'
 import { decksSlice } from '@/services/decks/decks.slice.ts'
@@ -25,7 +25,7 @@ export const Decks = () => {
   const itemsPerPage = useAppSelector(state => state.decks.itemsPerPage)
   const dispatch = useAppDispatch()
   const updateCurrentPage = (page: number) => dispatch(decksSlice.actions.updateCurrentPage(page))
-
+  const [openModal, setOpenModal] = useState(false)
   const [search, setSearch] = useState('')
   const { currentData: decks } = useGetDecksQuery({
     currentPage,
@@ -38,7 +38,15 @@ export const Decks = () => {
 
   return (
     <div className={s.container}>
-      <Slider />
+      <Button onClick={() => setOpenModal(true)}>Open modal</Button>
+      <Modal
+        open={openModal}
+        onOpenChange={() => setOpenModal(true)}
+        modalTitle={'Modal big title'}
+      >
+        <Typography>Hello</Typography>
+        <Button>Press me</Button>
+      </Modal>
       <Typography variant={'h2'}>Packs list</Typography>
       <div className={s.menu}>
         <TextField
