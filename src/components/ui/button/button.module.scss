@@ -100,3 +100,20 @@
 .fullWidth {
   width: 100%;
 }
+
+.icon {
+  @include button;
+
+  all: unset;
+
+  cursor: pointer;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  color: transparent;
+}
