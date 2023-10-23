@@ -9,7 +9,7 @@ type ModalProps = {
   trigger?: ReactNode //не обязательно, потому что триггер может быть не там где в коде лежит сама модалка
   onOpenChange: (open: boolean) => void
   children: ReactNode
-  // onClose?: () => void
+  onClose?: () => void
   hideCloseIcon?: boolean
   modalTitle?: string
   line?: boolean
