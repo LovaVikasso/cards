@@ -1,5 +1,13 @@
 import { baseApi } from '@/services/base-api.ts'
-import { Deck, DecksParams, DecksResponse } from '@/services/decks/types.ts'
+import {
+  Card,
+  Deck,
+  DeckRequestParams,
+  DecksParams,
+  DecksResponse,
+  GetRandomCard,
+  SaveTheGrade,
+} from '@/services/decks/types.ts'
 import { RootState } from '@/services/store.ts'
 
 const decksApi = baseApi.injectEndpoints({
@@ -15,6 +23,9 @@ const decksApi = baseApi.injectEndpoints({
           }
         },
         providesTags: ['Decks'], //как отработается запрос, данные из него будут храниться под тегом для исключенпя дальнйших перерисовок
+      }),
+      getDeckById: builder.query<Deck, { id: string }>({
+        query: ({ id }) => `/v1/decks/${id}`,
       }),
       createDeck: builder.mutation<Deck, { name: string }>({
         query: ({ name }) => ({
@@ -75,10 +86,67 @@ const decksApi = baseApi.injectEndpoints({
         },
         invalidatesTags: ['Decks'],
       }),
+      updateDeck: builder.mutation<Deck, DeckRequestParams>({
+        query: updateData => ({
+          url: `/v1/decks/${updateData.id}`,
+          method: 'PATCH',
+          body: {
+            cover: updateData.cover,
+            name: updateData.name,
+            isPrivate: updateData.isPrivate,
+          },
+        }),
+        async onQueryStarted({ id }, { dispatch, queryFulfilled, getState }) {
+          const state = getState() as RootState
+
+          try {
+            const response = await queryFulfilled
+
+            dispatch(
+              decksApi.util.updateQueryData(
+                'getDecks',
+                { currentPage: state.decks.currentPage },
+                draft => {
+                  draft.items = draft.items.map(item => (item.id === id ? item : response.data))
+                }
+              )
+            )
+          } catch (error) {
+            //  patchResult.undo()
+            alert(error)
+          }
+        },
+        invalidatesTags: ['Decks'],
+      }),
+      getARandomCard: builder.query<Card, GetRandomCard>({
+        query: ({ id, ...args }) => ({
+          url: `/v1/decks/${id}/learn`,
+          method: 'GET',
+          params: { ...args },
+        }),
+        providesTags: ['Learn'],
+      }),
+      saveTheGrade: builder.mutation<Deck, { id: string; data: SaveTheGrade }>({
+        query: ({ id, data }) => ({
+          url: `v1/decks/${id}/learn`,
+          method: 'POST',
+          body: {
+            cardId: data.cardId,
+            grade: data.grade,
+          },
+        }),
+        invalidatesTags: ['Learn'],
+        //не проверяла работу, надо делать компоненты. При применении не забыть сделать валидацию от 1 до 5
+      }),
     }
   },
 })
 
-export const { useGetDecksQuery, useCreateDeckMutation, useDeleteDeckMutation } = decksApi
+export const {
+  useGetDecksQuery,
+  useCreateDeckMutation,
+  useDeleteDeckMutation,
+  useUpdateDeckMutation,
+} = decksApi
 //из baseApi вытаскиваем хуки, которые use_название эндпоинта_вид запросы ( query или mutation)
 //use...query выоняются в момент вмонтирования компоненты

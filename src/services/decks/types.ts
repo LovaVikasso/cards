@@ -77,3 +77,18 @@ export type GetCardsParams = {
   currentPage?: number
   itemsPerPage?: number
 }
+export type DeckRequestParams = {
+  cover?: File // Поле cover ожидает файл (binary)
+  name?: string
+  isPrivate?: boolean
+  id?: string
+}
+
+export type GetRandomCard = {
+  id: string
+  previousCardId?: string
+}
+export type SaveTheGrade = {
+  cardId: string
+  grade: number
+}
