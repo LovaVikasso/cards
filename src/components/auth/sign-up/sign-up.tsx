@@ -28,20 +28,33 @@ const schema = z
     path: ['confirm'], //если будет ошибка то вывести в поле confirm
   })
 
-type FormValues = z.infer<typeof schema> //типизируем данные из схемы
-export const SignUp = () => {
-  const { handleSubmit, control } = useForm<FormValues>({
+export type SignUpFormType = z.infer<typeof schema> //вытаскивает типизацию для данных формы из схемы выше
+export type FormType = Omit<SignUpFormType, 'confirm'>
+export type SignUpProps = {
+  // value?: string
+  // onInputValueChange?: (value: string) => void
+  onSubmit: (data: FormType) => void //при сабмите отправляем данные типа мыло, пароль, подтверждение пароля
+}
+export const SignUp = (props: SignUpProps) => {
+  const { handleSubmit, control } = useForm<SignUpFormType>({
     resolver: zodResolver(schema),
     mode: 'onSubmit',
+    defaultValues: {
+      email: '',
+      password: '',
+      confirm: '',
+    },
   })
-  const onSubmit = (data: FormValues) => {
-    console.log(data)
-  }
+  const handleFormSubmitted = handleSubmit(data => {
+    const { confirm, ...rest } = data
+
+    props.onSubmit(rest)
+  })
 
   return (
     <Card className={s.container}>
       <Typography variant="h1">Sign up</Typography>
-      <form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={s.form} onSubmit={handleFormSubmitted}>
         <ControlledTextField name={'email'} control={control} label={'Email'} />
         <ControlledTextField
           name={'password'}
