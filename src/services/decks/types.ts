@@ -40,3 +40,40 @@ export type DecksParams = {
   currentPage?: number
   itemsPerPage?: number
 } | void
+
+export type Card = {
+  id: string
+  deckId: string
+  userId: string
+  question: string
+  answer: string
+  shots: number
+  answerImg: string | null
+  questionImg: string | null
+  questionVideo: string | null
+  answerVideo: string | null
+  created: string
+  updated: string
+  grade: number
+}
+
+export type CardsResponse = {
+  pagination: Pagination
+  items: Card[]
+}
+export type CreateCardParams = {
+  question: string
+  answer: string
+  questionImg?: string
+  answerImg?: string
+  questionVideo?: string
+  answerVideo?: string
+}
+export type GetCardsParams = {
+  id: string
+  question?: string
+  answer?: string
+  orderBy?: string
+  currentPage?: number
+  itemsPerPage?: number
+}
